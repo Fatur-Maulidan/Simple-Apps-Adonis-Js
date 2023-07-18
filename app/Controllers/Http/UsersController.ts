@@ -5,7 +5,7 @@ import SimpleBlogValidator from 'App/Validators/SimpleBlogValidator'
 
 export default class UsersController {
     public async getData() {
-        return Database.from('blog').select('*')
+        return await User.all()
     }
 
     public async addData({request, response}) {
