@@ -27,5 +27,6 @@ Route.get('/', async () => {
 Route.group(() => {
   Route.get('/', 'UsersController.getData')
   Route.post('/', 'UsersController.addData')
-  Route.delete('/:id', 'UsersController.delete')
+  // Route.put('/:id', 'UsersController.updateData')
+  Route.delete('/:id', 'UsersController.deleteData')
 }).prefix('/api')

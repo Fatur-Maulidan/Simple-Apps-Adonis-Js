@@ -1,7 +1,7 @@
 // import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Database from '@ioc:Adonis/Lucid/Database'
 import User from 'App/Models/User'
-import { schema, rules } from '@ioc:Adonis/Core/Validator'
+import SimpleBlogValidator from 'App/Validators/SimpleBlogValidator' 
 
 export default class UsersController {
     public async getData() {
@@ -9,14 +9,19 @@ export default class UsersController {
     }
 
     public async addData({request, response}) {
-        // if(request.body.length === 0) {
-        //     return response.json({
-        //         'response' : 404,
-        //         'message' : Object.keys(request.body).length
-        //     })
-        // } 
+
+        var payload = await request.validate(SimpleBlogValidator)
+        
+        if(await User.findBy('name',request.input('name'))){
+            return response.json({
+                'response' :  409,
+                'message' : request.input('name')+' is Exist'   
+            }) 
+        }
+
         var user = new User()
-        await user.fill(request.body).save()
+
+        await user.fill(request.all()).save()
 
         if(user.$isPersisted){
             return response.json({
@@ -31,11 +36,11 @@ export default class UsersController {
         })
     }
 
-    public async update({request, response}) {
+    // public async updateData({request, response}) {
 
-    }
+    // }
 
-    public async delete({request, response}){
+    public async deleteData({request, response}){
         var user = await User.findOrFail(request.param('id'))
         await user.delete()
 
