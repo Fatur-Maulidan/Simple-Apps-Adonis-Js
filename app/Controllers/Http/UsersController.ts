@@ -10,14 +10,7 @@ export default class UsersController {
 
     public async addData({request, response}) {
 
-        var payload = await request.validate(SimpleBlogValidator)
-        
-        if(await User.findBy('name',request.input('name'))){
-            return response.json({
-                'response' :  409,
-                'message' : request.input('name')+' is Exist'   
-            }) 
-        }
+        await request.validate(SimpleBlogValidator)
 
         var user = new User()
 
